@@ -9,6 +9,4 @@ services:
       - /nas/docker/weewx/sdb/weewx.sdb:/home/weewx/weewx.sdb
       - /nas/web/weewx:/home/weewx/public_html
       - /nas/docker/weewx/conf/weewx.conf:/home/weewx/weewx.conf
-    networks:
-      - internal
     restart: unless-stopped
