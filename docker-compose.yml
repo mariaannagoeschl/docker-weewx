@@ -1,7 +1,9 @@
 version: '2.3'
 services:
   weewx:
-    image: mitct02/weewx
+    build: # "context" and "dockerfile" fields have to be under "build"
+      context: .
+      dockerfile: ./Dockerfile
     container_name: weewx
     volumes:
       - /nas/docker/weewx/sdb/weewx.sdb:/home/weewx/weewx.sdb
