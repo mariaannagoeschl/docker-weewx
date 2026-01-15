@@ -76,13 +76,13 @@ FROM debian:bookworm-slim
   ## Install extensions
   RUN cd /var/tmp \
     && . /home/weewx/weewx-venv/bin/activate \
-    ## Belchertown extension
-    && wget https://github.com/poblabs/weewx-belchertown/releases/download/weewx-belchertown-1.3.1/weewx-belchertown-release.1.3.1.tar.gz \
-    && tar zxf weewx-belchertown-release.1.3.1.tar.gz \
-    && cd weewx-belchertown-master \
-    && python3 ~/weewx/src/weectl.py extension install -y . \
+    ## NeoWX Material skin
+    && wget https://github.com/neoground/neowx-material/releases/download/1.11/neowx-material-1.11.zip \
+    && unzip -q neowx-material-1.11.zip \
+    && cd dist \
+    && mv skins/neowx-material /home/weewx/skins/neowx-material \
     && cd /var/tmp \
-    && rm -rf weewx-belchertown-release.1.3.1.tar.gz weewx-belchertown-master \
+    && rm -rf neowx-material-1.11.zip dist \
     ## MQTT extension
     && wget -O weewx-mqtt.zip https://github.com/matthewwall/weewx-mqtt/archive/master.zip \
     && unzip -q weewx-mqtt.zip \
@@ -90,13 +90,11 @@ FROM debian:bookworm-slim
     && python3 ~/weewx/src/weectl.py extension install -y . \
     && cd /var/tmp \
     && rm -rf weewx-mqtt.zip weewx-mqtt-master \
-    ## WLL Driver
-    && wget -O WLLDriver.zip https://github.com/Drealine/weatherlinklive-driver-weewx/releases/download/2022.02.27-2/WLLDriver.zip \
-    && python3 ~/weewx/src/weectl.py extension install -y WLLDriver.zip \
-    && rm -f WLLDriver.zip \
-    && wget -O weewx-skyfield-almanac.zip https://github.com/roe-dl/weewx-skyfield-almanac/archive/master.zip \
-    && python3 ~/weewx/src/weectl.py extension install -y weewx-skyfield-almanac.zip \
-    && rm -f weewx-skyfield-almanac.zip \
+    ## GW1000 Interceptor Driver
+    && wget -O weewx-interceptor.zip https://github.com/matthewwall/weewx-interceptor/archive/master.zip \
+    && sudo wee_extension --install weewx-interceptor.zip \
+    && sudo wee_config --reconfigure --driver=user.interceptor --no-prompt \
+    && rm -f weewx-interceptor.zip \
     # add logging extensions
     && COPY conf-fragments/*.conf /home/weewx/tmp/conf-fragments/ \
     && RUN mkdir -p /home/weewx/tmp \
