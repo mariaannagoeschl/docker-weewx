@@ -10,3 +10,5 @@ services:
       - /nas/web/weewx:/home/weewx/public_html
       - /nas/docker/weewx/conf/weewx.conf:/home/weewx/weewx.conf
     restart: unless-stopped
+    environment:
+      - TZ=Europe/Berlin
